@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E107ACC0-B200-8E64-26B5-F5E3A0BCA3BC}</ProjectGuid>
+    <ProjectGuid>{CB3DE459-FF38-57F6-4D29-6FAE0A5ACADD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -58,9 +58,10 @@
   <ItemGroup>
     <Compile Include="Assets\Alex\Enemigo.cs" />
     <Compile Include="Assets\Deni\Scripts\Destroy.cs" />
-    <Compile Include="Assets\Jonathan\Images\test.cs" />
     <Compile Include="Assets\Deni\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Deni\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Jonathan\Scene\Menu\MenuController.cs" />
+    <Compile Include="Assets\Jonathan\Scene\Menu\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
