@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
@@ -13,15 +15,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float fireRate;
     private float lastShot;
     private Vector3 projectileDirection;
+    [SerializeField] ParticleSystem ps;
+    [SerializeField] GameObject gameOver;
+    [SerializeField] Text timer;
+    [SerializeField] float time;
+   
+    AudioSource audioData;
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
+        ps.playOnAwake = false;
+        ps.loop = true;
+        audioData = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (time <= 0)
+        {
+            timer.text = "TIME: 0:00";
+            gameOver.SetActive(true);
+            return;
+        }
+        time -= Time.deltaTime;
+        timer.text = "TIME: " + time.ToString("F2");
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -32,11 +51,16 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
+                ps.transform.position = firePosition.position;
+                ps.Play();
+                ps.enableEmission = true;
                 Fire();
+                audioData.Play();
             }
         }
         else
         {
+            ps.Stop();
             lastShot -= Time.deltaTime;
         }
     }
