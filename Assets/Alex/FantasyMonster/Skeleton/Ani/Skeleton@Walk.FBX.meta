@@ -261,6 +261,9 @@ ModelImporter:
   - first:
       137: 13700002
     second: Object02
+  - first:
+      74: 8149671479084113555
+    second: Walk (1)
   externalObjects: {}
   materials:
     materialImportMode: 1
