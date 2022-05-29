@@ -7,7 +7,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] private LayerMask groundMask;
     private Camera mainCamera;
-    
+    [SerializeField] float projectileSpeed;
+    [SerializeField] GameObject projectile;
+    [SerializeField] Transform firePosition;
+    [SerializeField] float fireRate;
+    private float lastShot;
+    private Vector3 projectileDirection;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +28,17 @@ public class PlayerController : MonoBehaviour
         this.transform.position += new Vector3(h * speed * Time.deltaTime, 0, v * speed * Time.deltaTime);
 
         Aim();
+        if (lastShot <= 0)
+        {
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                Fire();
+            }
+        }
+        else
+        {
+            lastShot -= Time.deltaTime;
+        }
     }
 
     private void Aim()
@@ -30,14 +46,10 @@ public class PlayerController : MonoBehaviour
         var (success, position) = GetMousePosition();
         if (success)
         {
-            // Calculate the direction
             var direction = position - transform.position;
-
-            // You might want to delete this line.
-            // Ignore the height difference.
+            projectileDirection = direction;
             direction.y = 0;
 
-            // Make the transform look in the direction.
             transform.forward = direction;
             
         }
@@ -49,13 +61,19 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask))
         {
-            // The Raycast hit something, return with the position.
             return (success: true, position: hitInfo.point);
         }
         else
         {
-            // The Raycast did not hit anything.
             return (success: false, position: Vector3.zero);
         }
+    }
+
+    private void Fire()
+    {
+        var shot = Instantiate(projectile, firePosition.position, Quaternion.identity) as GameObject;
+        shot.GetComponent<Rigidbody>().velocity = projectileDirection * projectileSpeed;
+        lastShot = fireRate;
+
     }
 }
