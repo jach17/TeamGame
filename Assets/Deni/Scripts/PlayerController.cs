@@ -19,7 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject gameOver;
     [SerializeField] Text timer;
     [SerializeField] float time;
-   
+    private Rigidbody rb;
+
     AudioSource audioData;
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
         ps.playOnAwake = false;
         ps.loop = true;
         audioData = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -41,10 +43,18 @@ public class PlayerController : MonoBehaviour
         }
         time -= Time.deltaTime;
         timer.text = "TIME: " + time.ToString("F2");
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        //float h = Input.GetAxis("Horizontal");
+        //float v = Input.GetAxis("Vertical");
 
-        this.transform.position += new Vector3(h * speed * Time.deltaTime, 0, v * speed * Time.deltaTime);
+        //this.transform.position += new Vector3(h * speed * Time.deltaTime, 0, v * speed * Time.deltaTime);
+
+        //Vector3 vector = new Vector3(h, 0f, v);
+        //rb.AddForce(vector * speed * Time.deltaTime);
+        //rb.MovePosition(rb.position +( vector * speed * Time.deltaTime));
+
+        float xMove = Input.GetAxisRaw("Horizontal"); // d key changes value to 1, a key changes value to -1
+        float zMove = Input.GetAxisRaw("Vertical"); // w key changes value to 1, s key changes value to -1
+        rb.velocity = new Vector3(xMove, rb.velocity.y, zMove) * speed;
 
         Aim();
         if (lastShot <= 0)
